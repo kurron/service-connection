@@ -1,0 +1,41 @@
+# default configuration
+---
+spring:
+  application:
+    name: logging
+
+logging:
+  group:
+    startup: "org.kurron.logging.logging.LoggingApplication, org.springframework.boot.web.embedded.tomcat.TomcatWebServer"
+  level:
+    root: "info"
+    org:
+      kurron:
+        logging:
+          logging: debug
+    org.hibernate: "error"
+
+# production mode
+---
+spring:
+  config:
+    activate:
+      on-profile: "production"
+logging:
+  level:
+    startup: "info"
+    root: warn
+  structured:
+    ecs:
+      service:
+        environment: ${DEPLOYED_TO:unknown}
+        node-name: ${random.uuid}
+    format:
+      console: ecs
+    json:
+      exclude: process.thread.name
+      rename:
+        process:
+          pid: process
+      add:
+        corporation: acme
