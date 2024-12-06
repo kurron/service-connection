@@ -1,0 +1,13 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPath": "/some-service/hello"
+  },
+  "response": {
+    "status": 200,
+    "body": "Hello from WireMock!",
+    "headers": {
+      "Content-Type": "text/plain"
+    }
+  }
+}
