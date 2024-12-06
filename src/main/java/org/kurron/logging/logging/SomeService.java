@@ -2,6 +2,9 @@ package org.kurron.logging.logging;
 
 import org.springframework.stereotype.Service;
 
+/**
+ * Need a faux service to front the automatically configured client.
+ */
 @Service
 public class SomeService {
     private final SomeServiceClient client;
