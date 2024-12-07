@@ -49,7 +49,7 @@ public class TestcontainersWiremockExampleApplicationTests {
     @DisplayName("verify we can talk to WireMock")
     void verifyHello() {
         assertNotNull(subjectUnderTest);
-        var response = subjectUnderTest.randomText();
+        var response = subjectUnderTest.sayHello();
         LOGGER.info("Response is {}", response);
         assertNotNull(response);
     }
