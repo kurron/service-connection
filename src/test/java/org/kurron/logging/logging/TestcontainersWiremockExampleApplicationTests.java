@@ -47,7 +47,7 @@ public class TestcontainersWiremockExampleApplicationTests {
 
     @Test
     @DisplayName("verify we can talk to WireMock")
-    void contextLoads() {
+    void verifyHello() {
         assertNotNull(subjectUnderTest);
         var response = subjectUnderTest.randomText();
         LOGGER.info("Response is {}", response);

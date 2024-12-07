@@ -5,9 +5,10 @@
   },
   "response": {
     "status": 200,
-    "body": "Hello from WireMock!",
+    "body": "Hello from WireMock! Current date and time is {{now format='yyyy-MM-dd HH:mm:ss'}}",
     "headers": {
       "Content-Type": "text/plain"
-    }
+    },
+    "transformers": ["response-template"]
   }
 }
