@@ -10,24 +10,26 @@ import org.springframework.boot.testcontainers.service.connection.ServiceConnect
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestClient;
-import org.testcontainers.containers.output.Slf4jLogConsumer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.wiremock.integrations.testcontainers.WireMockContainer;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@SpringBootTest(classes = TestcontainersWiremockExampleApplicationTests.SpringWantsThis.class)
+// variant of https://www.docker.com/blog/building-spring-boots-serviceconnection-for-testcontainers-wiremock/
+@SpringBootTest(classes = TestcontainersWiremockExampleApplicationTests.ExampleConfiguration.class)
 @Testcontainers
 public class TestcontainersWiremockExampleApplicationTests {
-    private static final Logger LOGGER = LoggerFactory.getLogger("wiremock");
+    private static final Logger LOGGER = LoggerFactory.getLogger(TestcontainersWiremockExampleApplicationTests.class);
 
     @Configuration
     @EnableConfigurationProperties(SomeServiceProperties.class)
-    static class SpringWantsThis {
+    static class ExampleConfiguration {
         @Bean
         SomeServiceClient someServiceClient(SomeServiceConnectionDetails connectionDetails) {
             var url = connectionDetails.url() + "/some-service/hello";
+            var token = connectionDetails.token();
+            LOGGER.info("Connection details contains {}, {}", token, url);
             return new SomeServiceClient(RestClient.builder().baseUrl(url).build());
         }
 
@@ -42,12 +44,12 @@ public class TestcontainersWiremockExampleApplicationTests {
     static WireMockContainer wireMock = new WireMockContainer("wiremock/wiremock:3.2.0-alpine").withMappingFromResource("some-service-mapping", "some-service-mapping.json");
 
     @Autowired
-    private SomeService sut;
+    private SomeService subjectUnderTest;
 
     @Test
     void contextLoads() {
-        assertNotNull(sut);
-        var response = sut.randomText();
+        assertNotNull(subjectUnderTest);
+        var response = subjectUnderTest.randomText();
         LOGGER.info("Response is {}", response);
         assertNotNull(response);
     }
