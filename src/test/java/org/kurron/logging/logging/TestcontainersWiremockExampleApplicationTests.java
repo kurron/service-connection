@@ -1,5 +1,6 @@
 package org.kurron.logging.logging;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +27,7 @@ public class TestcontainersWiremockExampleApplicationTests {
     @EnableConfigurationProperties(SomeServiceProperties.class)
     static class ExampleConfiguration {
         @Bean
-        SomeServiceOperations someServiceOperations(SomeServiceConnectionDetails connectionDetails) {
+        SomeServiceOperations someServiceOperations(SomeServiceTemplateConnectionDetails connectionDetails) {
             var url = connectionDetails.url() + "/some-service/hello";
             var token = connectionDetails.token();
             LOGGER.info("Connection details contains {}, {}", token, url);
@@ -42,6 +43,7 @@ public class TestcontainersWiremockExampleApplicationTests {
     private SomeServiceOperations subjectUnderTest;
 
     @Test
+    @DisplayName("verify we can talk to WireMock")
     void contextLoads() {
         assertNotNull(subjectUnderTest);
         var response = subjectUnderTest.randomText();

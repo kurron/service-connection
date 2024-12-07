@@ -9,19 +9,19 @@ import org.wiremock.integrations.testcontainers.WireMockContainer;
  * This information can be then be used by the ServiceConnection annotation.
  */
 @SuppressWarnings("unused")
-class WireMockContainerConnectionDetailsFactory extends ContainerConnectionDetailsFactory<WireMockContainer, SomeServiceConnectionDetails> {
+class WireMockContainerConnectionDetailsFactory extends ContainerConnectionDetailsFactory<WireMockContainer, SomeServiceTemplateConnectionDetails> {
     // need a default constructor for Spring to use
     WireMockContainerConnectionDetailsFactory() {}
 
-    protected SomeServiceConnectionDetails getContainerConnectionDetails(ContainerConnectionSource<WireMockContainer> source) {
-        return new WireMockContainerConnectionDetails(source);
+    protected SomeServiceTemplateConnectionDetails getContainerConnectionDetails(ContainerConnectionSource<WireMockContainer> source) {
+        return new WireMockContainerTemplateConnectionDetails(source);
     }
 
     /**
      * Creates connection details by interrogating the WireMock container.
      */
-    private static final class WireMockContainerConnectionDetails extends ContainerConnectionDetailsFactory.ContainerConnectionDetails<WireMockContainer> implements SomeServiceConnectionDetails {
-        private WireMockContainerConnectionDetails(ContainerConnectionSource<WireMockContainer> source) {
+    private static final class WireMockContainerTemplateConnectionDetails extends ContainerConnectionDetailsFactory.ContainerConnectionDetails<WireMockContainer> implements SomeServiceTemplateConnectionDetails {
+        private WireMockContainerTemplateConnectionDetails(ContainerConnectionSource<WireMockContainer> source) {
             super(source);
         }
 
