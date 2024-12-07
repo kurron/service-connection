@@ -15,6 +15,6 @@ public class SomeServiceTemplate implements SomeServiceOperations {
 
     @Override
     public String randomText() {
-        return client.get().retrieve().body(String.class);
+        return client.get().uri("/some-service/hello").retrieve().body(String.class);
     }
 }

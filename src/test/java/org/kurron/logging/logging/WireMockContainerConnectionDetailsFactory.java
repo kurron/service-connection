@@ -6,7 +6,7 @@ import org.wiremock.integrations.testcontainers.WireMockContainer;
 
 /**
  * This object is registered in spring.factories, understanding how to get connection details from a WireMock container.
- * This information can be then be used by the ServiceConnection annotation.
+ * This information can be then be used by the ServiceConnection annotation, simplifying test setup.
  */
 @SuppressWarnings("unused")
 class WireMockContainerConnectionDetailsFactory extends ContainerConnectionDetailsFactory<WireMockContainer, SomeServiceTemplateConnectionDetails> {
@@ -32,7 +32,7 @@ class WireMockContainerConnectionDetailsFactory extends ContainerConnectionDetai
 
         @Override
         public String token() {
-            return "wire-mock-token";
+            return getContainer().getContainerId();
         }
     }
 }
