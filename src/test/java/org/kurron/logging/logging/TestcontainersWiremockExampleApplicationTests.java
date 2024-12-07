@@ -26,6 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class TestcontainersWiremockExampleApplicationTests {
     private static final Logger LOGGER = LoggerFactory.getLogger(TestcontainersWiremockExampleApplicationTests.class);
 
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     @Configuration
     @EnableConfigurationProperties(SomeServiceProperties.class)
     static class ExampleConfiguration {
