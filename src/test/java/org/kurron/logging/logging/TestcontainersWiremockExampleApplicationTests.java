@@ -26,11 +26,11 @@ public class TestcontainersWiremockExampleApplicationTests {
     @EnableConfigurationProperties(SomeServiceProperties.class)
     static class ExampleConfiguration {
         @Bean
-        SomeServiceClient someServiceClient(SomeServiceConnectionDetails connectionDetails) {
+        SomeServiceOperations someServiceOperations(SomeServiceConnectionDetails connectionDetails) {
             var url = connectionDetails.url() + "/some-service/hello";
             var token = connectionDetails.token();
             LOGGER.info("Connection details contains {}, {}", token, url);
-            return new SomeServiceClient(RestClient.builder().baseUrl(url).build());
+            return new SomeServiceTemplate(RestClient.builder().baseUrl(url).build());
         }
     }
 
@@ -39,7 +39,7 @@ public class TestcontainersWiremockExampleApplicationTests {
     static WireMockContainer wireMock = new WireMockContainer("wiremock/wiremock:3.2.0-alpine").withMappingFromResource("some-service-mapping", "some-service-mapping.json");
 
     @Autowired
-    private SomeServiceClient subjectUnderTest;
+    private SomeServiceOperations subjectUnderTest;
 
     @Test
     void contextLoads() {
