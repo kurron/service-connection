@@ -5,7 +5,7 @@ import org.springframework.boot.testcontainers.service.connection.ContainerConne
 import org.wiremock.integrations.testcontainers.WireMockContainer;
 
 /**
- * This object is registered in spring.factories and understands how to get connection details to a WireMock container.
+ * This object is registered in spring.factories, understanding how to get connection details from a WireMock container.
  * This information can be then be used by the ServiceConnection annotation.
  */
 @SuppressWarnings("unused")

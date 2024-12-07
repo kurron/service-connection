@@ -13,7 +13,7 @@ public class SomeServiceClient {
         this.client = client;
     }
 
-    RestClient connection() {
-        return client;
+    String randomText() {
+        return client.get().retrieve().body(String.class);
     }
 }

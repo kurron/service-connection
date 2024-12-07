@@ -1,8 +1,7 @@
 package org.kurron.logging.logging;
 
 /**
- * Normally, this would be part of an AutoConfiguration, pulling values from application.yml. Since we're showcasing
- * a custom ConnectionDetails implementation, this is never used.
+ * Normally, this would be part of an AutoConfiguration, but, we don't need it for this example.
  */
 public class PropertiesSomeServiceConnectionDetails implements SomeServiceConnectionDetails {
     private final SomeServiceProperties properties;
