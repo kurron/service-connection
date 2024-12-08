@@ -10,6 +10,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.vault.authentication.TokenAuthentication;
+import org.springframework.vault.client.VaultEndpoint;
+import org.springframework.vault.core.VaultOperations;
+import org.springframework.vault.core.VaultTemplate;
 import org.springframework.web.client.RestClient;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
@@ -32,10 +36,19 @@ public class TestcontainersWiremockExampleApplicationTests {
     static class ExampleConfiguration {
         @Bean
         SomeServiceOperations someServiceOperations(SomeServiceTemplateConnectionDetails connectionDetails) {
+            // THe connection details should be populated with coordinates to the Testcontainer instance.
             var url = connectionDetails.url();
             var token = connectionDetails.token();
             LOGGER.info("Connection details contains {}, {}", token, url);
             return new SomeServiceTemplate(RestClient.builder().baseUrl(url).build());
+        }
+
+        @Bean
+        VaultOperations vaultOperations(VaultTemplateConnectionDetails connectionDetails) {
+            // THe connection details should be populated with coordinates to the Testcontainer instance.
+            var authenticationToken = new TokenAuthentication("everybody in!");
+            var endpoint = VaultEndpoint.from(connectionDetails.getHttpHostAddress());
+            return new VaultTemplate(endpoint, authenticationToken);
         }
     }
 
@@ -43,15 +56,31 @@ public class TestcontainersWiremockExampleApplicationTests {
     @ServiceConnection // connection information is obtained automagically via WireMockContainerConnectionDetailsFactory.
     static WireMockContainer wireMock = new WireMockContainer("wiremock/wiremock:3.2.0-alpine").withMappingFromResource("some-service-mapping", "some-service-mapping.json");
 
+    @Container
+    @ServiceConnection // connection information is obtained automagically via CustomVaultContainerConnectionDetailsFactory.
+    static CustomVaultContainer vault = new CustomVaultContainer("hashicorp/vault:1.13.0").withVaultToken("everybody in!");
+
     @Autowired
-    private SomeServiceOperations subjectUnderTest;
+    private SomeServiceOperations someServiceOperations;
+
+    @Autowired
+    private VaultOperations vaultOperations;
 
     @Test
     @DisplayName("verify we can talk to WireMock")
     void verifyHello() {
-        assertNotNull(subjectUnderTest);
-        var response = subjectUnderTest.sayHello();
+        assertNotNull(someServiceOperations);
+        var response = someServiceOperations.sayHello();
         LOGGER.info("Response is {}", response);
+        assertNotNull(response);
+    }
+
+    @Test
+    @DisplayName("verify we can talk to Vault")
+    void verifyVault() {
+        assertNotNull(vaultOperations);
+        var response = vaultOperations.opsForToken().create();
+        LOGGER.info("Created Vault Token is {}", response.getToken().getToken());
         assertNotNull(response);
     }
 }

@@ -1,1 +1,1 @@
-org.springframework.boot.autoconfigure.service.connection.ConnectionDetailsFactory=org.kurron.logging.logging.WireMockContainerConnectionDetailsFactory
+org.springframework.boot.autoconfigure.service.connection.ConnectionDetailsFactory=org.kurron.logging.logging.WireMockContainerConnectionDetailsFactory,org.kurron.logging.logging.CustomVaultContainerConnectionDetailsFactory
