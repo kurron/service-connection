@@ -21,7 +21,7 @@ import org.wiremock.integrations.testcontainers.WireMockContainer;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
- * Showcase how configure gateway templates to automatically connect to Testcontainer instances during testing.
+ * Showcase how configure gateway templates to automatically connect to container instances during testing.
  * A variation of <a href="https://www.docker.com/blog/building-spring-boots-serviceconnection-for-testcontainers-wiremock/">Building Spring Boot’s ServiceConnection for Testcontainers WireMock</a>
  */
 @SpringBootTest(classes = CustomServiceConnectionTests.ExampleConfiguration.class)
