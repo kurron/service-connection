@@ -35,7 +35,7 @@ public class TestcontainersWiremockExampleApplicationTests {
         @Bean
         RestClient someServiceOperations(RestClientConnectionDetails connectionDetails) {
             // THe connection details should be populated with coordinates to the Testcontainer instance.
-            var url = connectionDetails.getHttpHostAddress();
+            var url = connectionDetails.getBaseURI();
             LOGGER.info("Connection details contains {}", url);
             return RestClient.builder().baseUrl(url).build();
         }
@@ -44,7 +44,7 @@ public class TestcontainersWiremockExampleApplicationTests {
         VaultOperations vaultOperations(VaultTemplateConnectionDetails connectionDetails) {
             // THe connection details should be populated with coordinates to the Testcontainer instance.
             var authenticationToken = new TokenAuthentication("everybody in!");
-            var endpoint = VaultEndpoint.from(connectionDetails.getHttpHostAddress());
+            var endpoint = VaultEndpoint.from(connectionDetails.getBaseURI());
             return new VaultTemplate(endpoint, authenticationToken);
         }
     }

@@ -26,7 +26,7 @@ class WireMockContainerConnectionDetailsFactory extends ContainerConnectionDetai
         }
 
         @Override
-        public String getHttpHostAddress() {
+        public String getBaseURI() {
             return getContainer().getBaseUrl();
         }
     }

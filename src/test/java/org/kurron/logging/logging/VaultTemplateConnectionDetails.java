@@ -3,5 +3,9 @@ package org.kurron.logging.logging;
 import org.springframework.boot.autoconfigure.service.connection.ConnectionDetails;
 
 public interface VaultTemplateConnectionDetails extends ConnectionDetails {
-    String getHttpHostAddress();
+    /**
+     * Connection string useful as a base RestClient path.
+     * @return host, port and path to use.
+     */
+    String getBaseURI();
 }
