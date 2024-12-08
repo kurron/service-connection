@@ -21,30 +21,28 @@ import org.wiremock.integrations.testcontainers.WireMockContainer;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
- * Showcase how configure gateway templates to automatically connect to WireMock containers during testing.
+ * Showcase how configure gateway templates to automatically connect to Testcontainer instances during testing.
  * A variation of <a href="https://www.docker.com/blog/building-spring-boots-serviceconnection-for-testcontainers-wiremock/">Building Spring Boot’s ServiceConnection for Testcontainers WireMock</a>
  */
-@SpringBootTest(classes = TestcontainersWiremockExampleApplicationTests.ExampleConfiguration.class)
+@SpringBootTest(classes = CustomServiceConnectionTests.ExampleConfiguration.class)
 @Testcontainers
-public class TestcontainersWiremockExampleApplicationTests {
-    private static final Logger LOGGER = LoggerFactory.getLogger(TestcontainersWiremockExampleApplicationTests.class);
+public class CustomServiceConnectionTests {
+    private static final Logger LOGGER = LoggerFactory.getLogger(CustomServiceConnectionTests.class);
 
     @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     @Configuration
     static class ExampleConfiguration {
         @Bean
-        RestClient someServiceOperations(RestClientConnectionDetails connectionDetails) {
-            // THe connection details should be populated with coordinates to the Testcontainer instance.
-            var url = connectionDetails.getBaseURI();
+        RestClient someServiceOperations(RestClientConnectionDetails containerConnectionDetails) {
+            var url = containerConnectionDetails.getBaseURI();
             LOGGER.info("Connection details contains {}", url);
             return RestClient.builder().baseUrl(url).build();
         }
 
         @Bean
-        VaultOperations vaultOperations(VaultTemplateConnectionDetails connectionDetails) {
-            // THe connection details should be populated with coordinates to the Testcontainer instance.
+        VaultOperations vaultOperations(VaultTemplateConnectionDetails containerConnectionDetails) {
             var authenticationToken = new TokenAuthentication("everybody in!");
-            var endpoint = VaultEndpoint.from(connectionDetails.getBaseURI());
+            var endpoint = VaultEndpoint.from(containerConnectionDetails.getBaseURI());
             return new VaultTemplate(endpoint, authenticationToken);
         }
     }
@@ -65,11 +63,10 @@ public class TestcontainersWiremockExampleApplicationTests {
 
     @Test
     @DisplayName("verify we can talk to WireMock")
-    void verifyHello() {
+    void verifyWireMock() {
         assertNotNull(restClient);
         var response = restClient.get().uri("/some-service/hello").retrieve().body(String.class);
-        LOGGER.info("Response is {}", response);
-        assertNotNull(response);
+        LOGGER.info("RestClient response is {}", response);
     }
 
     @Test
@@ -77,7 +74,6 @@ public class TestcontainersWiremockExampleApplicationTests {
     void verifyVault() {
         assertNotNull(vaultOperations);
         var response = vaultOperations.opsForToken().create();
-        LOGGER.info("Created Vault Token is {}", response.getToken().getToken());
-        assertNotNull(response);
+        LOGGER.info("VaultOperations is {}", response.getToken().getToken());
     }
 }
