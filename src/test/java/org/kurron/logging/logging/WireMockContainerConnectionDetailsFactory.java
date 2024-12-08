@@ -9,30 +9,25 @@ import org.wiremock.integrations.testcontainers.WireMockContainer;
  * This information can be then be used by the ServiceConnection annotation, simplifying test setup.
  */
 @SuppressWarnings("unused")
-class WireMockContainerConnectionDetailsFactory extends ContainerConnectionDetailsFactory<WireMockContainer, SomeServiceTemplateConnectionDetails> {
+class WireMockContainerConnectionDetailsFactory extends ContainerConnectionDetailsFactory<WireMockContainer, RestClientConnectionDetails> {
     // need a default constructor for Spring to use
     WireMockContainerConnectionDetailsFactory() {}
 
-    protected SomeServiceTemplateConnectionDetails getContainerConnectionDetails(ContainerConnectionSource<WireMockContainer> source) {
+    protected RestClientConnectionDetails getContainerConnectionDetails(ContainerConnectionSource<WireMockContainer> source) {
         return new WireMockContainerTemplateConnectionDetails(source);
     }
 
     /**
      * Creates connection details by interrogating the WireMock container.
      */
-    private static final class WireMockContainerTemplateConnectionDetails extends ContainerConnectionDetailsFactory.ContainerConnectionDetails<WireMockContainer> implements SomeServiceTemplateConnectionDetails {
+    private static final class WireMockContainerTemplateConnectionDetails extends ContainerConnectionDetailsFactory.ContainerConnectionDetails<WireMockContainer> implements RestClientConnectionDetails {
         private WireMockContainerTemplateConnectionDetails(ContainerConnectionSource<WireMockContainer> source) {
             super(source);
         }
 
         @Override
-        public String url() {
+        public String getHttpHostAddress() {
             return getContainer().getBaseUrl();
-        }
-
-        @Override
-        public String token() {
-            return getContainer().getContainerId();
         }
     }
 }

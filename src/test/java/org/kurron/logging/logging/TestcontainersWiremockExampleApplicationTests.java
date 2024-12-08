@@ -35,12 +35,11 @@ public class TestcontainersWiremockExampleApplicationTests {
     @EnableConfigurationProperties(SomeServiceProperties.class)
     static class ExampleConfiguration {
         @Bean
-        SomeServiceOperations someServiceOperations(SomeServiceTemplateConnectionDetails connectionDetails) {
+        RestClient someServiceOperations(RestClientConnectionDetails connectionDetails) {
             // THe connection details should be populated with coordinates to the Testcontainer instance.
-            var url = connectionDetails.url();
-            var token = connectionDetails.token();
-            LOGGER.info("Connection details contains {}, {}", token, url);
-            return new SomeServiceTemplate(RestClient.builder().baseUrl(url).build());
+            var url = connectionDetails.getHttpHostAddress();
+            LOGGER.info("Connection details contains {}", url);
+            return RestClient.builder().baseUrl(url).build();
         }
 
         @Bean
@@ -61,7 +60,7 @@ public class TestcontainersWiremockExampleApplicationTests {
     static CustomVaultContainer vault = new CustomVaultContainer("hashicorp/vault:1.13.0").withVaultToken("everybody in!");
 
     @Autowired
-    private SomeServiceOperations someServiceOperations;
+    private RestClient restClient;
 
     @Autowired
     private VaultOperations vaultOperations;
@@ -69,8 +68,8 @@ public class TestcontainersWiremockExampleApplicationTests {
     @Test
     @DisplayName("verify we can talk to WireMock")
     void verifyHello() {
-        assertNotNull(someServiceOperations);
-        var response = someServiceOperations.sayHello();
+        assertNotNull(restClient);
+        var response = restClient.get().uri("/some-service/hello").retrieve().body(String.class);
         LOGGER.info("Response is {}", response);
         assertNotNull(response);
     }
