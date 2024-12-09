@@ -56,10 +56,10 @@ public class CustomServiceConnectionTests {
     static CustomVaultContainer vault = new CustomVaultContainer("hashicorp/vault:1.13.0").withVaultToken("everybody in!");
 
     @Autowired
-    private RestClient restClient;
+    RestClient restClient;
 
     @Autowired
-    private VaultOperations vaultOperations;
+    VaultOperations vaultOperations;
 
     @Test
     @DisplayName("verify we can talk to WireMock")
