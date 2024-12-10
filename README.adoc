@@ -28,9 +28,9 @@ To enable a container unknown to Spring's ServiceConnection annotation, we need 
 . register the factory in `META-INF/spring.factories`, telling Spring it should run the specified factories at test time.
 
 === Objects of Interest
-* `org.kurron.logging.logging.CustomServiceConnectionTests` to see everything working together
-* `org.kurron.logging.logging.WireMockContainerConnectionDetailsFactory` to see how a RestClient is configured to talk to WireMock
-* `org.kurron.logging.logging.CustomVaultContainerConnectionDetailsFactory` to how a VaultTemplate is configured to talk to Vault
+* `CustomServiceConnectionTests` to see everything working together
+* `WireMockContainerConnectionDetailsFactory` to see how a RestClient is configured to talk to WireMock
+* `CustomVaultContainerConnectionDetailsFactory` to how a VaultTemplate is configured to talk to Vault
 * `src/test/resources/META-INF/spring.factories` to see what the factory registration looks like
 
 == Troubleshooting
