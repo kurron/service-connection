@@ -7,7 +7,7 @@ ifdef::env-github[]
 endif::[]
 
 == Overview
-This project started out as a simple experiment with Spring's new structured logging support but ended up morphing into an example of how to add custom ServiceConnection support to your tests.
+This project started out as a simple experiment with Spring's new structured logging feature but ended up morphing into an example of how to add custom ServiceConnection support to your tests.
 
 == Prerequisites
 * JDK 21 or greater
