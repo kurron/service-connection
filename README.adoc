@@ -30,7 +30,7 @@ To enable a container unknown to Spring's ServiceConnection annotation, we need 
 === Objects of Interest
 * `CustomServiceConnectionTests` to see everything working together
 * `WireMockContainerConnectionDetailsFactory` to see how a RestClient is configured to talk to WireMock
-* `CustomVaultContainerConnectionDetailsFactory` to how a VaultTemplate is configured to talk to Vault
+* `CustomVaultContainerConnectionDetailsFactory` to see how a VaultTemplate is configured to talk to Vault
 * `src/test/resources/META-INF/spring.factories` to see what the factory registration looks like
 
 == Troubleshooting
